@@ -1,4 +1,4 @@
-package org.ig2i.serveur;
+package org.ig2i.chat2i.serveur;
 
 
 import org.jetbrains.annotations.NotNull;

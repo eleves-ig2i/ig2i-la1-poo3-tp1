@@ -1,4 +1,4 @@
-package org.ig2i.client;
+package org.ig2i.chat2i.client;
 
 import javax.swing.*;
 
@@ -12,6 +12,19 @@ public class ApplicationClientGUI {
 
     public JPanel getRootPanel() {
         return rootPanel;
+    }
+
+
+    public JTextArea getConversation() {
+        return conversation;
+    }
+
+    public JTextField getMessageInput() {
+        return messageInput;
+    }
+
+    public JButton getEnvoyerButton() {
+        return envoyerButton;
     }
 
     public ApplicationClientGUI()

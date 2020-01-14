@@ -1,20 +1,21 @@
-package org.ig2i;
+package org.ig2i.chat2i;
 
-import org.ig2i.client.ApplicationClient;
-import org.ig2i.client.ApplicationClientGUI;
-import org.ig2i.serveur.Serveur;
+import org.ig2i.chat2i.client.ApplicationClient;
+import org.ig2i.chat2i.client.ApplicationClientGUI;
+import org.ig2i.chat2i.serveur.Serveur;
 
 import javax.swing.*;
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.Socket;
 
+import static java.lang.Thread.sleep;
+
 public class Chat2i
 {
     public static void tp1q11() throws IOException {
         Serveur serv = new Serveur();
         serv.start();
-        //sleep(1000);
         for(int i =0; i < 5; i++)
         {
             InetAddress adresseIp = InetAddress.getByName("127.0.0.1");
@@ -37,9 +38,24 @@ public class Chat2i
 
     public static void tp1q13()
     {
-        ApplicationClient a = new ApplicationClient();
+        ApplicationClient a = new ApplicationClient("127.0.0.1",Serveur.PORT_ECOUTE);
     }
+
+    public static void tp1q15()
+    {
+        try {
+            Serveur serv = new Serveur();
+            serv.start();
+            ApplicationClient a = new ApplicationClient("127.0.0.1",Serveur.PORT_ECOUTE);
+            System.out.println("Nombre de connexions avec le serveur : " + serv.getNbConnexions());
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+    }
+
     public static void main(String[] args) {
-        tp1q13();
+
+        tp1q15();
     }
 }

@@ -1,4 +1,4 @@
-package org.ig2i.serveur;
+package org.ig2i.chat2i.serveur;
 
 import java.io.IOException;
 import java.net.ServerSocket;
@@ -15,13 +15,13 @@ public class Serveur extends Thread
 
     public static final int PORT_ECOUTE = 49152;
 
-    public static final int TIMEOUT_MS = 5000;
+    public static final int TIMEOUT_MS = 100000;
 
     public Serveur() throws IOException {
         try {
             this.socketEcoute = new ServerSocket(PORT_ECOUTE);
             System.out.println("[Serveur] TIMEOUT_MS / 1000" + " secondes d'attente de connexion avec le client.");
-            socketEcoute.setSoTimeout(TIMEOUT_MS); // 5 secondes pour accepter une connexion
+            socketEcoute.setSoTimeout(TIMEOUT_MS); // 100 secondes pour accepter une connexion
             System.out.println("[Serveur] Serveur ouvert.");
         } catch (IOException e) {
             System.err.println("[Serveur] Impossible de créer le socket d'écoute sur le port " + PORT_ECOUTE);
@@ -68,5 +68,11 @@ public class Serveur extends Thread
             System.err.println("Impossible de fermer le socket d'écoute.");
             e.printStackTrace();
         }
+    }
+
+
+    public int getNbConnexions()
+    {
+        return connexions.size();
     }
 }
