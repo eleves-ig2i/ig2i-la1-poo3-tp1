@@ -2,7 +2,7 @@ package org.ig2i.client;
 
 import javax.swing.*;
 
-public class ApplicationClientGUIForm {
+public class ApplicationClientGUI {
     private JTextArea conversation;
     private JLabel labelEnvoiMessage;
     private JTextField messageInput;
@@ -14,7 +14,7 @@ public class ApplicationClientGUIForm {
         return rootPanel;
     }
 
-    public ApplicationClientGUIForm()
+    public ApplicationClientGUI()
     {
         // Avec Intellij Idea, les champs sont tous initialisés avant le constructeur appelé.
         // Pour afficher une fenêtre : cf https://tutorials.tinyappco.com/Java/SwingGUI

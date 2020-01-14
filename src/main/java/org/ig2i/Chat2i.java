@@ -1,7 +1,7 @@
 package org.ig2i;
 
 import org.ig2i.client.ApplicationClient;
-import org.ig2i.client.ApplicationClientGUIForm;
+import org.ig2i.client.ApplicationClientGUI;
 import org.ig2i.serveur.Serveur;
 
 import javax.swing.*;
@@ -27,7 +27,7 @@ public class Chat2i
     public static void tp1q12()
     {
         JFrame fenetre = new JFrame("Chat2i");
-        ApplicationClientGUIForm client = new ApplicationClientGUIForm();
+        ApplicationClientGUI client = new ApplicationClientGUI();
         fenetre.setContentPane( client.getRootPanel() );
         fenetre.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
         fenetre.pack();

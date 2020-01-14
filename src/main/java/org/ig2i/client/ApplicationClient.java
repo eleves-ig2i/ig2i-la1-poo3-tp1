@@ -7,7 +7,7 @@ import java.net.Socket;
 public class ApplicationClient extends JFrame
 {
 
-    private ApplicationClientGUIForm clientDesigner;
+    private ApplicationClientGUI clientDesigner;
 
     private Socket socketFlux;
 
@@ -15,7 +15,7 @@ public class ApplicationClient extends JFrame
 
     public ApplicationClient(String adresse){
        super("Chat2i");
-       clientDesigner = new ApplicationClientGUIForm();
+       clientDesigner = new ApplicationClientGUI();
        this.setContentPane( clientDesigner.getRootPanel() );
        this.setDefaultCloseOperation( JFrame.EXIT_ON_CLOSE);
        this.pack();
