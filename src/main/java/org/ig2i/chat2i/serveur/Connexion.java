@@ -1,8 +1,5 @@
 package org.ig2i.chat2i.serveur;
 
-
-import org.jetbrains.annotations.NotNull;
-
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -17,7 +14,10 @@ public class Connexion extends Thread
 
     private PrintWriter out;
 
-    public Connexion(@NotNull Socket socketFlux) throws IOException {
+    public Connexion(Socket socketFlux) throws IOException {
+        if( socketFlux == null)
+            throw new NullPointerException("socketFlux ne peut pas valoir null.");
+
         this.socketFlux = socketFlux;
 
         InputStreamReader isr = new InputStreamReader(socketFlux.getInputStream());
