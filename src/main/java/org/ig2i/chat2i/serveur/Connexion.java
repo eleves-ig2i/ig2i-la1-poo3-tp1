@@ -1,5 +1,8 @@
 package org.ig2i.chat2i.serveur;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
@@ -8,6 +11,8 @@ import java.net.Socket;
 
 public class Connexion extends Thread
 {
+    Logger log = LogManager.getLogger(Connexion.class);
+
     private Socket socketFlux;
 
     private BufferedReader in;

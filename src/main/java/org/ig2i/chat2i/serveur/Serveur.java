@@ -1,5 +1,8 @@
 package org.ig2i.chat2i.serveur;
 
+import org.apache.logging.log4j.LogManager;
+import org.apache.logging.log4j.Logger;
+
 import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
@@ -9,6 +12,8 @@ import java.util.List;
 
 public class Serveur extends Thread
 {
+    Logger log = LogManager.getLogger(Serveur.class);
+
     private List<Connexion> connexions;
 
     private ServerSocket socketEcoute;
@@ -20,11 +25,11 @@ public class Serveur extends Thread
     public Serveur() throws IOException {
         try {
             this.socketEcoute = new ServerSocket(PORT_ECOUTE);
-            System.out.println("[Serveur] TIMEOUT_MS / 1000" + " secondes d'attente de connexion avec le client.");
+            log.debug("TIMEOUT_MS / 1000" + " secondes d'attente de connexion avec le client.");
             socketEcoute.setSoTimeout(TIMEOUT_MS); // 100 secondes pour accepter une connexion
-            System.out.println("[Serveur] Serveur ouvert.");
+            log.info("Serveur ouvert.");
         } catch (IOException e) {
-            System.err.println("[Serveur] Impossible de créer le socket d'écoute sur le port " + PORT_ECOUTE);
+            log.error("Impossible de créer le socket d'écoute sur le port " + PORT_ECOUTE);
             System.exit(1);
         }
 
@@ -39,18 +44,18 @@ public class Serveur extends Thread
 
         try {
             while (!isInterrupted()) {
-                System.out.println("[Serveur] En attente de connexion ..");
+                log.debug("En attente de connexion ..");
                 Socket socketFlux = socketEcoute.accept();
-                System.out.println("[Serveur] Connexion établie avec un client: " + socketFlux);
+                log.info("Connexion établie avec un client: " + socketFlux);
                 connexions.add( new Connexion(socketFlux) );
             }
         }
         catch (IOException e){
             if( e instanceof SocketTimeoutException )
             {
-                System.out.println("[Serveur] Délai d'attente de connexion dépassé.");
+                log.warn("Délai d'attente de connexion dépassé.");
             } else {
-                e.printStackTrace();
+                log.error(e);
             }
         } finally {
             fermerSocketEcoute();
@@ -61,11 +66,11 @@ public class Serveur extends Thread
     private void fermerSocketEcoute()
     {
         try {
-            System.out.println("Fermeture du serveur en cours.");
+            log.debug("Fermeture du serveur en cours.");
             socketEcoute.close();
-            System.out.println("Serveur fermé.");
+            log.info("Serveur fermé.");
         } catch (IOException e) {
-            System.err.println("Impossible de fermer le socket d'écoute.");
+            log.error("Impossible de fermer le socket d'écoute.");
             e.printStackTrace();
         }
     }
