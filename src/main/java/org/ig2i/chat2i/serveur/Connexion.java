@@ -8,6 +8,7 @@ import java.io.IOException;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
+import java.util.Objects;
 
 public class Connexion extends Thread
 {
@@ -20,8 +21,7 @@ public class Connexion extends Thread
     private PrintWriter out;
 
     public Connexion(Socket socketFlux) throws IOException {
-        if( socketFlux == null)
-            throw new NullPointerException("socketFlux ne peut pas valoir null.");
+        Objects.requireNonNull(socketFlux, "socketFlux ne peut pas valoir null.");
 
         this.socketFlux = socketFlux;
 
@@ -31,6 +31,15 @@ public class Connexion extends Thread
         out = new PrintWriter(socketFlux.getOutputStream(),true);
         // autoFlush à true permet de vider le tampon à chaque appel de printIn().
         // Le message est envoyé au serveur que lorsque le tampon est vdé.
+    }
+
+    /**
+     * Ecrit sur le flux de sortie de chacune des connexions de l'ensemble des connexions du serveur
+     * @param message
+     */
+    private void envoyerMessage(String message)
+    {
+        out.write(message);
     }
 
 

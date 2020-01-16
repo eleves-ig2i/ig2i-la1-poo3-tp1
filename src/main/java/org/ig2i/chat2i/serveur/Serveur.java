@@ -25,11 +25,12 @@ public class Serveur extends Thread
     public Serveur() throws IOException {
         try {
             this.socketEcoute = new ServerSocket(PORT_ECOUTE);
-            log.debug("TIMEOUT_MS / 1000" + " secondes d'attente de connexion avec le client.");
+            log.debug(TIMEOUT_MS / 1000 + " secondes d'attente de connexion avec le client.");
             socketEcoute.setSoTimeout(TIMEOUT_MS); // 100 secondes pour accepter une connexion
             log.info("Serveur ouvert.");
         } catch (IOException e) {
             log.error("Impossible de créer le socket d'écoute sur le port " + PORT_ECOUTE);
+            e.printStackTrace();
             System.exit(1);
         }
 
@@ -56,6 +57,7 @@ public class Serveur extends Thread
                 log.warn("Délai d'attente de connexion dépassé.");
             } else {
                 log.error(e);
+                e.printStackTrace();
             }
         } finally {
             fermerSocketEcoute();
@@ -79,5 +81,9 @@ public class Serveur extends Thread
     public int getNbConnexions()
     {
         return connexions.size();
+    }
+
+    /* package */ List<Connexion> getConnexions() {
+        return connexions;
     }
 }
