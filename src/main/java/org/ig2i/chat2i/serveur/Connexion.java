@@ -20,10 +20,14 @@ public class Connexion extends Thread
 
     private PrintWriter out;
 
-    public Connexion(Socket socketFlux) throws IOException {
+    private Serveur instanceServeur;
+
+    public Connexion(Socket socketFlux, Serveur instanceServeur) throws IOException {
         Objects.requireNonNull(socketFlux, "socketFlux ne peut pas valoir null.");
+        Objects.requireNonNull(instanceServeur, "instanceServeur ne peut pas valoir null.");
 
         this.socketFlux = socketFlux;
+        this.instanceServeur = instanceServeur;
 
         InputStreamReader isr = new InputStreamReader(socketFlux.getInputStream());
         in = new BufferedReader(isr);
@@ -35,12 +39,59 @@ public class Connexion extends Thread
 
     /**
      * Ecrit sur le flux de sortie de chacune des connexions de l'ensemble des connexions du serveur
+     * Le mot clé synchronized signifie que seul 1 thread peut accéder à cette méthode.
      * @param message
      */
-    private void envoyerMessage(String message)
+    private synchronized void envoyerMessage(String message)
     {
-        out.write(message);
+        for( Connexion c : instanceServeur.getConnexions() )
+        {
+            log.debug("Envoi du message {} à la connexion {}",message,c);
+            c.out.write(message);
+        }
     }
 
 
+    /**
+     * Tant qu'il y a un message à lire sur le flux d'entrée,
+     * on envoie ce message à toutes les connexions.
+     * Lorsque la fin du flux d'entrée est atteinte, la méthode ferme toutes les ressources et termine l'exécution du thread courant.
+     */
+    @Override
+    public void run() {
+        String message = null;
+        try {
+            while ((message = in.readLine()) != null) {
+                envoyerMessage(message);
+            }
+        } catch( IOException e)
+        {
+
+        } finally {
+            fermerRessources();
+        }
+    }
+
+
+    private void fermerRessources()
+    {
+        try {
+            log.debug("Fermeture de la connexion {} en cours..", this);
+            in.close();
+            out.close();
+            socketFlux.close();
+            log.info("Fermeture de la connexion {} réussie.", this);
+        } catch( IOException e)
+        {
+            log.error("Echec de la fermeture de la connexion.");
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public String toString() {
+        return "Connexion{" +
+                "socketFlux=" + socketFlux +
+                '}';
+    }
 }

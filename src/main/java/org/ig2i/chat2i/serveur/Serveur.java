@@ -7,14 +7,14 @@ import java.io.IOException;
 import java.net.ServerSocket;
 import java.net.Socket;
 import java.net.SocketTimeoutException;
-import java.util.LinkedList;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
 
 public class Serveur extends Thread
 {
     Logger log = LogManager.getLogger(Serveur.class);
 
-    private List<Connexion> connexions;
+    private Set<Connexion> connexions;
 
     private ServerSocket socketEcoute;
 
@@ -34,7 +34,7 @@ public class Serveur extends Thread
             System.exit(1);
         }
 
-        connexions = new LinkedList<>();
+        connexions = new HashSet<>();
     }
 
     /**
@@ -47,8 +47,14 @@ public class Serveur extends Thread
             while (!isInterrupted()) {
                 log.debug("En attente de connexion ..");
                 Socket socketFlux = socketEcoute.accept();
-                log.info("Connexion établie avec un client: " + socketFlux);
-                connexions.add( new Connexion(socketFlux) );
+                // Afin d'éviter les conflits entre l'ajout d'une connexion et l'envoi d'un message à toutes les connexions,
+                // on considère qu'aucun thread ne peut accéder à l'instance du serveur lorsque ce dernier ajoute une connexion.
+                synchronized (this) {
+                    log.info("Connexion établie avec un client: " + socketFlux);
+                    Connexion c = new Connexion(socketFlux, this);
+                    connexions.add(c);
+                    c.start();
+                }
             }
         }
         catch (IOException e){
@@ -72,7 +78,7 @@ public class Serveur extends Thread
             socketEcoute.close();
             log.info("Serveur fermé.");
         } catch (IOException e) {
-            log.error("Impossible de fermer le socket d'écoute.");
+            log.error("Echec de la fermeture du socket d'écoute.");
             e.printStackTrace();
         }
     }
@@ -83,7 +89,7 @@ public class Serveur extends Thread
         return connexions.size();
     }
 
-    /* package */ List<Connexion> getConnexions() {
+    /* package */ Set<Connexion> getConnexions() {
         return connexions;
     }
 }
