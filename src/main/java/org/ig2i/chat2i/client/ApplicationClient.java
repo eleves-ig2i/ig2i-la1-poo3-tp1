@@ -3,6 +3,7 @@ package org.ig2i.chat2i.client;
 
 import org.apache.logging.log4j.LogManager;
 import org.apache.logging.log4j.Logger;
+import org.ig2i.chat2i.serveur.Serveur;
 
 import javax.swing.*;
 import java.io.IOException;
@@ -23,9 +24,13 @@ public class ApplicationClient extends JFrame
 
     private PrintWriter out;
 
+    private String nom;
 
-    public ApplicationClient(String adresse, int port){
-        super("Chat2i");
+
+    public ApplicationClient(String nom, String adresse, int port){
+        super(nom + " on Chat2i");
+        this.nom = nom;
+
         clientDesigner = new ApplicationClientGUI();
         this.setContentPane( clientDesigner.getRootPanel() );
         this.setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
@@ -35,6 +40,23 @@ public class ApplicationClient extends JFrame
         connecterServeur(adresse,port);
 
         creerBufferServeur();
+
+        clientDesigner.getEnvoyerButton().addActionListener(actionEvent -> {
+            String message = clientDesigner.getMessageInput().getText();
+            log.info("L'utilisateur {} veut envoyer :'{}'",nom, message);
+            if( message != null && !message.isEmpty() )
+            {
+                String body = nom + ": "+ message;
+                out.println(message);
+                log.debug("Message envoyé au serveur.");
+            } else
+            {
+                log.warn("Message vide");
+                JOptionPane.showMessageDialog(null, "Message vide !", "Attention", JOptionPane.WARNING_MESSAGE);
+            }
+        });
+
+        log.info("Application client initialisée, en attente de message !");
     }
 
 
@@ -42,6 +64,8 @@ public class ApplicationClient extends JFrame
     {
         try {
             socketFlux = new Socket( InetAddress.getByName(adresseIP), port);
+            log.debug("Connexion avec le serveur réussie.");
+            System.out.println(socketFlux);
         } catch (IOException e) {
             log.error(e.getMessage());
             e.printStackTrace();
@@ -81,9 +105,15 @@ public class ApplicationClient extends JFrame
 
     @Override
     public void dispose() {
+        log.info("Fermeture de l'application client " + nom);
         super.dispose();
         out.close();
         fermerSocketFlux();
         //System.exit(0);
+    }
+
+
+    public static void main(String[] args) {
+        ApplicationClient a = new ApplicationClient("Nathan","127.0.0.1", Serveur.PORT_ECOUTE);
     }
 }

@@ -41,7 +41,7 @@ public class Chat2i
 
     public static void tp1q13()
     {
-        ApplicationClient a = new ApplicationClient("127.0.0.1",Serveur.PORT_ECOUTE);
+        ApplicationClient a = new ApplicationClient("Nathan","127.0.0.1",Serveur.PORT_ECOUTE);
     }
 
     public static void tp1q15()
@@ -51,7 +51,7 @@ public class Chat2i
             Serveur serv = new Serveur();
             serv.start();
             while(!Thread.currentThread().isInterrupted()) {
-                ApplicationClient a = new ApplicationClient("127.0.0.1", Serveur.PORT_ECOUTE);
+                ApplicationClient a = new ApplicationClient("Nathan","127.0.0.1", Serveur.PORT_ECOUTE);
                 log.info("Nombre de connexions avec le serveur : " + serv.getNbConnexions());
                 log.info("Appuyer sur entrée pour ajouter une nouvelle instance de ApplicationClient");
                 sc.nextLine();
@@ -62,8 +62,20 @@ public class Chat2i
 
     }
 
+    public static void tp1q20()
+    {
+        Serveur serv = null;
+        try {
+            serv = new Serveur();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        serv.start();
+        ApplicationClient a = new ApplicationClient("Nathan","127.0.0.1", Serveur.PORT_ECOUTE);
+    }
+
     public static void main(String[] args) {
 
-        tp1q15();
+        tp1q20();
     }
 }

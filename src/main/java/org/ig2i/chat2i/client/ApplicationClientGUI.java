@@ -15,15 +15,13 @@ public class ApplicationClientGUI {
     }
 
 
-    public JTextArea getConversation() {
-        return conversation;
-    }
+    /* package */ JTextArea getConversation() { return conversation; }
 
-    public JTextField getMessageInput() {
+    /* package */ JTextField getMessageInput() {
         return messageInput;
     }
 
-    public JButton getEnvoyerButton() {
+    /* package */ JButton getEnvoyerButton() {
         return envoyerButton;
     }
 
@@ -31,6 +29,5 @@ public class ApplicationClientGUI {
     {
         // Avec Intellij Idea, les champs sont tous initialisés avant le constructeur appelé.
         // Pour afficher une fenêtre : cf https://tutorials.tinyappco.com/Java/SwingGUI
-
     }
 }

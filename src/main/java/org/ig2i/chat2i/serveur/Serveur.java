@@ -42,7 +42,6 @@ public class Serveur extends Thread
      */
     @Override
     public void run() {
-
         try {
             while (!isInterrupted()) {
                 log.debug("En attente de connexion ..");
@@ -89,7 +88,21 @@ public class Serveur extends Thread
         return connexions.size();
     }
 
+    public boolean supprimerConnexion(Connexion c)
+    {
+        return connexions.remove(c);
+    }
+
     /* package */ Set<Connexion> getConnexions() {
         return connexions;
+    }
+
+    public static void main(String[] args) {
+        try {
+            Serveur s = new Serveur();
+            s.start();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 }

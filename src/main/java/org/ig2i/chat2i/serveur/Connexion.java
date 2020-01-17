@@ -61,12 +61,16 @@ public class Connexion extends Thread
     public void run() {
         String message = null;
         try {
+            log.debug("Connexion initialisée, en attente de message..");
+            System.out.println(socketFlux);
             while ((message = in.readLine()) != null) {
+                log.info("Envoi du message '{}' à toutes les connexions.",message);
                 envoyerMessage(message);
+                log.debug("Envoi du message réussi.");
             }
         } catch( IOException e)
         {
-
+            log.warn("fin du flux d'entrée.");
         } finally {
             fermerRessources();
         }
@@ -80,7 +84,10 @@ public class Connexion extends Thread
             in.close();
             out.close();
             socketFlux.close();
-            log.info("Fermeture de la connexion {} réussie.", this);
+            if( instanceServeur.supprimerConnexion(this) )
+                log.info("Fermeture de la connexion {} réussie.", this);
+            else
+                log.warn("Connexion non existante dans le serveur");
         } catch( IOException e)
         {
             log.error("Echec de la fermeture de la connexion.");
