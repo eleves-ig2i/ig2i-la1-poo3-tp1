@@ -62,7 +62,6 @@ public class Connexion extends Thread
         String message = null;
         try {
             log.debug("Connexion initialisée, en attente de message..");
-            System.out.println(socketFlux);
             while ((message = in.readLine()) != null) {
                 log.info("Envoi du message '{}' à toutes les connexions.",message);
                 envoyerMessage(message);

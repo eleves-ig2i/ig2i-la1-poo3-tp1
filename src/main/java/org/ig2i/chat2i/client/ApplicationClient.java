@@ -65,7 +65,6 @@ public class ApplicationClient extends JFrame
         try {
             socketFlux = new Socket( InetAddress.getByName(adresseIP), port);
             log.debug("Connexion avec le serveur réussie.");
-            System.out.println(socketFlux);
         } catch (IOException e) {
             log.error(e.getMessage());
             e.printStackTrace();
