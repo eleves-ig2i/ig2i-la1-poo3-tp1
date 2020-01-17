@@ -130,6 +130,6 @@ public class ApplicationClient extends JFrame
 
     public static void main(String[] args) {
         //ApplicationClient a = new ApplicationClient("Nathan","127.0.0.1", Serveur.PORT_ECOUTE);
-        ApplicationClient a = new ApplicationClient("Nathan","192.168.1.102", 55555);
+        //ApplicationClient a = new ApplicationClient("Nathan","192.168.1.102", 55555);
     }
 }
