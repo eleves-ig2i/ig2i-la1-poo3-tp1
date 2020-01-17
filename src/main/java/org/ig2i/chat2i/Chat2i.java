@@ -74,8 +74,24 @@ public class Chat2i
         ApplicationClient a = new ApplicationClient("Nathan","127.0.0.1", Serveur.PORT_ECOUTE);
     }
 
+
+    public static void tp1q22()
+    {
+        Serveur serv = null;
+        try {
+            serv = new Serveur();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        serv.start();
+        ApplicationClient a1 = new ApplicationClient("Nathan","127.0.0.1", Serveur.PORT_ECOUTE);
+        ApplicationClient a2 = new ApplicationClient("Pierre","127.0.0.1", Serveur.PORT_ECOUTE);
+        ApplicationClient a3 = new ApplicationClient("Paul","127.0.0.1", Serveur.PORT_ECOUTE);
+        ApplicationClient a4 = new ApplicationClient("Jacques","127.0.0.1", Serveur.PORT_ECOUTE);
+    }
+
     public static void main(String[] args) {
 
-        tp1q20();
+        tp1q22();
     }
 }

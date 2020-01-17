@@ -47,7 +47,7 @@ public class Connexion extends Thread
         for( Connexion c : instanceServeur.getConnexions() )
         {
             log.debug("Envoi du message {} à la connexion {}",message,c);
-            c.out.write(message);
+            c.out.println(message); // la méthode write() ne marche pas si on attend une ligne au bout du flux.
         }
     }
 

@@ -33,11 +33,11 @@ public class Ecouteur extends Thread {
         try {
             while ((message = in.readLine()) != null) {
                 log.debug("Reception du message '{}'", message);
-                conversation.append(message);
+                conversation.append(message+ "\n");
             }
         } catch (IOException e)
         {
-            log.error("Fin du flux d'entrée.");
+            log.warn("Fin du flux d'entrée.");
         }
     }
 }

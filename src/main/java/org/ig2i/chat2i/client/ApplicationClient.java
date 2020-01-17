@@ -6,7 +6,9 @@ import org.apache.logging.log4j.Logger;
 import org.ig2i.chat2i.serveur.Serveur;
 
 import javax.swing.*;
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.ConnectException;
 import java.net.InetAddress;
@@ -47,7 +49,7 @@ public class ApplicationClient extends JFrame
             if( message != null && !message.isEmpty() )
             {
                 String body = nom + ": "+ message;
-                out.println(message);
+                out.println(body);
                 log.debug("Message envoyé au serveur.");
             } else
             {
@@ -55,6 +57,13 @@ public class ApplicationClient extends JFrame
                 JOptionPane.showMessageDialog(null, "Message vide !", "Attention", JOptionPane.WARNING_MESSAGE);
             }
         });
+
+        try {
+            creerEcouteurServeur();
+        } catch (IOException e) {
+            log.error("Echec de création de l'écouteur du serveur");
+            JOptionPane.showMessageDialog(null, "Impossible de se connecter au serveur !", "Erreur", JOptionPane.ERROR_MESSAGE);
+        }
 
         log.info("Application client initialisée, en attente de message !");
     }
@@ -102,6 +111,13 @@ public class ApplicationClient extends JFrame
         }
     }
 
+
+    private void creerEcouteurServeur() throws IOException {
+        InputStreamReader isr = new InputStreamReader(socketFlux.getInputStream());
+        Ecouteur e = new Ecouteur(clientDesigner.getConversation(), new BufferedReader(new BufferedReader(isr)) );
+        e.start();
+    }
+
     @Override
     public void dispose() {
         log.info("Fermeture de l'application client " + nom);
@@ -113,6 +129,7 @@ public class ApplicationClient extends JFrame
 
 
     public static void main(String[] args) {
-        ApplicationClient a = new ApplicationClient("Nathan","127.0.0.1", Serveur.PORT_ECOUTE);
+        //ApplicationClient a = new ApplicationClient("Nathan","127.0.0.1", Serveur.PORT_ECOUTE);
+        ApplicationClient a = new ApplicationClient("Nathan","192.168.1.102", 55555);
     }
 }
